@@ -40,6 +40,24 @@ class pyghack:
                         " CREATE (b)-[s:Friend]->(a) RETURN *"
                         , student_name_a=student_name_a, student_name_b=student_name_b)
     
+    def disconnect_student_event(self, student_name, event_name):
+        with self.driver.session() as session:
+            session.run("MATCH(a:Event)-[r:Attendee]-(b:Student) where a.name = $event_name AND b.name = $student_name "
+                        "DELETE r "
+                        "WITH a, b "
+                        "MATCH(b)-[s:Attending]-(a) "
+                        "DELETE s"
+                        , event_name = event_name, student_name = student_name)
+    
+    def disconnect_student_student(self, student_name_a, student_name_b):
+        with self.driver.session() as session:
+            session.run("MATCH(a:Student)-[r:Friend]-(b:Student) where a.name = $student_name_a AND b.name = $student_name_b "
+                        "DELETE r "
+                        "WITH a, b "
+                        "MATCH(b)-[s:Friend]-(a) "
+                        "DELETE s"
+                        , student_name_a = student_name_a, student_name_b = student_name_b)
+    
     def fetch_events(self):
         with self.driver.session() as session:
             result = session.run("MATCH (a:Event) RETURN a.name AS name")
@@ -67,5 +85,5 @@ if __name__ == "__main__":
     # database.delete_student("Chris", "sports")
     # database.create_relationship("Chris", "1", "Study group")
     # database.fetch_students()
-
+    # database.disconnect_student_student("Rajat", "Chris")
     database.close()

@@ -32,6 +32,22 @@ def index():
             padding: 15px 32px;
             text-decoration: none;
             display: inline-block;
+            font-size: 16px;"> <a href="/connect-student-event/">Add Student to an Event</a></button>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/connect-student-student/">Connect Students</a></button>
+            </body>
+            <br><br>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
             font-size: 16px;"> <a href="/delete-student/">Remove Student</a></button>
             <button style="background-color: orange; /* Green */
             border: none;
@@ -46,16 +62,14 @@ def index():
             padding: 15px 32px;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;"> <a href="/connect-student-event/">Add Student to an Event</a></button>
-            
+            font-size: 16px;"> <a href="/disconnect-student-event/">Remove Student from an Event</a></button>
             <button style="background-color: orange; /* Green */
             border: none;
             color: white;
             padding: 15px 32px;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;"> <a href="/connect-student-student/">Connect Students</a></button>
-            </body>
+            font-size: 16px;"> <a href="/disconnect-student-student/">Disconnect Students</a></button>
             ''' % name
 
 
@@ -506,6 +520,159 @@ def connect_student_student():
 
         database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
         database.connect_student_student(student_name_a, student_name_b)
+        database.close()
+
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    # names, start_times, end_times, types = database.fetch_events()
+    # names = ', '.join(names)
+    # start_times = ', '.join(start_times)
+    # end_times = ', '.join(end_times)
+    # types = ', '.join(types)
+    names_students, interests = database.fetch_students()
+    names_students = ', '.join(names_students)
+    interests = ', '.join(interests)
+    database.close()
+    return output % (names_students, interests, str)
+
+@app.route('/disconnect-student-event/', methods=['GET', 'POST'])
+def disconnect_student_event():
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    # names_students, interests = database.fetch_students()
+    # names_students = ', '.join(names_students)
+    # interests = ', '.join(interests)
+    database.close()
+    str = ""
+    output = ''' 
+              <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
+               <form method="POST" align = "center">
+               <h2>Current events: %s -
+               Start times: %s -
+               End times: %s - 
+               Types: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Event Name: <input type="text" name="event_name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Student Name: <input type="text" name="student_name" style = "height: 38;"></label></div>
+               <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Remove Student from an event">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
+               <p>%s</p>
+           </form>
+           </body>'''
+
+    if request.method == 'POST':
+        str = "Student Removed successfully from the Event!"
+        event_name = request.form.get('event_name')
+        student_name = request.form.get('student_name')
+        if not event_name:
+            str = "You didn't enter a name!"
+            return output % (names, start_times, end_times, types, str)
+        if not student_name:
+            str = "You didn't enter a name!"
+            return output % (names, start_times, end_times, types, str)
+
+        database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+        database.disconnect_student_event(student_name, event_name)
+        database.close()
+
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    # names_students, interests = database.fetch_students()
+    # names_students = ', '.join(names_students)
+    # interests = ', '.join(interests)
+    database.close()
+    return output % (names, start_times, end_times, types, str)
+
+@app.route('/disconnect-student-student/', methods=['GET', 'POST'])
+def disconnect_student_student():
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    # names, start_times, end_times, types = database.fetch_events()
+    # names = ', '.join(names)
+    # start_times = ', '.join(start_times)
+    # end_times = ', '.join(end_times)
+    # types = ', '.join(types)
+    names_students, interests = database.fetch_students()
+    names_students = ', '.join(names_students)
+    interests = ', '.join(interests)
+    database.close()
+    str = ""
+    output = ''' 
+              <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
+               <form method="POST" align = "center">
+               <h2>Current students: %s -
+               Their interests: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Student Name: <input type="text" name="student_name_a" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Student Name: <input type="text" name="student_name_b" style = "height: 38;"></label></div>
+               <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Disconnect two students">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
+               <p>%s</p>
+           </form>
+           </body>'''
+
+    if request.method == 'POST':
+        str = "Students successfully disconnected!"
+        student_name_a = request.form.get('student_name_a')
+        student_name_b = request.form.get('student_name_b')
+        if not student_name_a:
+            str = "You didn't enter a name!"
+            return output % (names_students, interests, str)
+        if not student_name_b:
+            str = "You didn't enter a name!"
+            return output % (names_students, interests, str)
+        if student_name_a == student_name_b:
+            str = "That's the same student!"
+            return output % (names_students, interests, str)
+
+        database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+        database.disconnect_student_student(student_name_a, student_name_b)
         database.close()
 
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
