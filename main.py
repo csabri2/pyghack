@@ -30,11 +30,19 @@ class pyghack:
                         " CREATE (a)-[r:Attending]->(b)"
                         " CREATE (b)-[s:Attendee]->(a) RETURN *"
                         , student_name=student_name, event_name=event_name)
+    
+    def fetch_students(self):
+        with self.driver.session() as session:
+            result = session.run("MATCH (a:Student) RETURN a.name AS name")
+            names = [record["name"] for record in result]
+            return names
 
 
 if __name__ == "__main__":
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
-    database.delete_event("", "", "", "")
+    # database.delete_event("Study group", "5:30", "10:30", "study")
     # database.delete_student("Chris", "sports")
     # database.create_relationship("Chris", "1", "Study group")
+    # database.fetch_students()
+
     database.close()
