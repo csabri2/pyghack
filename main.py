@@ -8,18 +8,21 @@ class pyghack:
     def close(self):
         self.driver.close()
 
-    def add_event(self, name, start_time, end_time, type):
+    def add_event(self, user, name, start_time, end_time, type):
         with self.driver.session() as session:
-            session.write_transaction(self._create_and_return_event, name, start_time, end_time, type)
+            session.write_transaction(self._create_and_return_event, user, name, start_time, end_time, type)
 
     @staticmethod
-    def _create_and_return_event(tx, name, start_time, end_time, type):
+    def _create_and_return_event(tx, user, name, start_time, end_time, type):
         result = tx.run("CREATE (a:Event) "
-                        "SET a.name = $name, "
+                        "SET a.user = $user, "
+                        "a.name = $name, "
                         "a.start_time = $start_time, "
                         "a.end_time = $end_time, "
-                        "a.type = $type", name = name, start_time = start_time, end_time = end_time, type = type)
+                        "a.type = $type", user = user, name = name, start_time = start_time, end_time = end_time, type = type)
         return result.single()[0]
+    
+    # def _create_and_return_user(tx, )
 
 
 if __name__ == "__main__":
