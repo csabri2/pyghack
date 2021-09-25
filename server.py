@@ -7,11 +7,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    name = "TimeStamp"
     return '''
+            <header><h1>Welcome to %s</h1></header>
             <button> <a href="/add-student/">Add Student</a></button>
             <button> <a href="/add-event/">Add Event</a></button>
-            <button> <a href="/delete-student/">Delete Student</a></button>
-            <button> <a href="/delete-event/">Delete Event</a></button>'''
+            <button> <a href="/delete-student/">Remove Student</a></button>
+            <button> <a href="/delete-event/">Remove Event</a></button>''' % name
 
 # allow both GET and POST requests
 @app.route('/add-student/', methods=['GET', 'POST'])
@@ -29,7 +31,7 @@ def add_student():
                <div><label>Name: <input type="text" name="name"></label></div>
                <div><label>Interest: <input type="text" name="interest"></label></div>
                <input type="submit" value="Add Student">
-               <button> <a href="/">Go back</a></button>
+               <button> <a href="/">Go Back</a></button>
                <p>%s</p>
            </form>'''
     # handle the POST request
@@ -76,7 +78,7 @@ def add_event():
                <div><label>End Time: <input type="text" name="end_time"></label></div>
                <div><label>Type: <input type="text" name="type"></label></div>
                <input type="submit" value="Add Event">
-               <button> <a href="/">Go back</a></button>
+               <button> <a href="/">Go Back</a></button>
                <p>%s</p>
            </form>'''
     # handle the POST request
@@ -126,8 +128,8 @@ def delete_student():
                <p>Their interests: %s</p>
                <div><label>Name: <input type="text" name="name"></label></div>
                <div><label>Interest: <input type="text" name="interest"></label></div>
-               <input type="submit" value="Delete Student">
-               <button> <a href="/">Go back</a></button>
+               <input type="submit" value="Remove Student">
+               <button> <a href="/">Go Back</a></button>
                <p>%s</p>
            </form>'''
     # handle the POST request
@@ -173,8 +175,8 @@ def delete_event():
                <div><label>Start Time: <input type="text" name="start_time"></label></div>
                <div><label>End Time: <input type="text" name="end_time"></label></div>
                <div><label>Type: <input type="text" name="type"></label></div>
-               <input type="submit" value="Delete Event">
-               <button> <a href="/">Go back</a></button>
+               <input type="submit" value="Remove Event">
+               <button> <a href="/">Go Back</a></button>
                <p>%s</p>
            </form>'''
     # handle the POST request
