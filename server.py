@@ -5,15 +5,51 @@ from main import pyghack
 # create the Flask app
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     name = "TimeStamp"
     return '''
+            <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
             <header><h1>Welcome to %s</h1></header>
-            <button> <a href="/add-student/">Add Student</a></button>
-            <button> <a href="/add-event/">Add Event</a></button>
-            <button> <a href="/delete-student/">Remove Student</a></button>
-            <button> <a href="/delete-event/">Remove Event</a></button>''' % name
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/add-student/">Add Student</a></button>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/add-event/">Add Event</a></button>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/delete-student/">Remove Student</a></button>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/delete-event/">Remove Event</a></button>
+            <button style="background-color: orange; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;"> <a href="/create-relationship/">Add Student to an event</a></button>
+            </body>
+            ''' % name
+
 
 # allow both GET and POST requests
 @app.route('/add-student/', methods=['GET', 'POST'])
@@ -25,15 +61,38 @@ def add_student():
     database.close()
     str = ""
     output = '''
+           <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
            <form method="POST">
-               <p>Current students: %s</p>
-               <p>Their interests: %s</p>
-               <div><label>Name: <input type="text" name="name"></label></div>
-               <div><label>Interest: <input type="text" name="interest"></label></div>
-               <input type="submit" value="Add Student">
-               <button> <a href="/">Go Back</a></button>
+               <h2>Current students: %s -
+               Their interests: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Name: <input type="text" name="name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Interest: <input type="text" name="interest" style = "height: 38;"></label></div>
+               <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Add Student">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
                <p>%s</p>
-           </form>'''
+           </form>
+           </body>'''
     # handle the POST request
     if request.method == 'POST':
         str = "Student successfully added!"
@@ -57,6 +116,7 @@ def add_student():
     database.close()
     return output % (names, interests, str)
 
+
 @app.route('/add-event/', methods=['GET', 'POST'])
 def add_event():
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
@@ -68,19 +128,50 @@ def add_event():
     database.close()
     str = ""
     output = '''
+           <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
            <form method="POST">
-               <p>Current events: %s</p>
-               <p>Their start times: %s</p>
-               <p>Their end times: %s</p>
-               <p>Their types: %s</p>
-               <div><label>Name: <input type="text" name="name"></label></div>
-               <div><label>Start Time: <input type="text" name="start_time"></label></div>
-               <div><label>End Time: <input type="text" name="end_time"></label></div>
-               <div><label>Type: <input type="text" name="type"></label></div>
-               <input type="submit" value="Add Event">
-               <button> <a href="/">Go Back</a></button>
+               <h2>Current events: %s -
+               Start times: %s -
+               End times: %s -
+               Types: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"> <label>Name: <input type="text" name="name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Start Time: <input type="text" name="start_time" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>End Time: <input type="text" name="end_time" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Type: <input type="text" name="type" style = "height: 38;"></label></div>
+               <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Add Event">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
                <p>%s</p>
-           </form>'''
+           </form>
+           </body>'''
     # handle the POST request
     if request.method == 'POST':
         str = "Event successfully added!"
@@ -113,6 +204,7 @@ def add_event():
     database.close()
     return output % (names, start_times, end_times, types, str)
 
+
 # allow both GET and POST requests
 @app.route('/delete-student/', methods=['GET', 'POST'])
 def delete_student():
@@ -123,15 +215,38 @@ def delete_student():
     database.close()
     str = ""
     output = '''
+           <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
            <form method="POST">
-               <p>Current students: %s</p>
-               <p>Their interests: %s</p>
-               <div><label>Name: <input type="text" name="name"></label></div>
-               <div><label>Interest: <input type="text" name="interest"></label></div>
-               <input type="submit" value="Remove Student">
-               <button> <a href="/">Go Back</a></button>
+               <h2>Current students: %s -
+               Their interests: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Name: <input type="text" name="name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Interest: <input type="text" name="interest" style = "height: 38;"></label></div>
+                <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Remove Student">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
                <p>%s</p>
-           </form>'''
+           </form>
+           </body>'''
     # handle the POST request
     if request.method == 'POST':
         str = "Student successfully removed!"
@@ -155,6 +270,7 @@ def delete_student():
     database.close()
     return output % (names, interests, str)
 
+
 @app.route('/delete-event/', methods=['GET', 'POST'])
 def delete_event():
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
@@ -166,19 +282,50 @@ def delete_event():
     database.close()
     str = ""
     output = '''
+           <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
            <form method="POST">
-               <p>Current events: %s</p>
-               <p>Their start times: %s</p>
-               <p>Their end times: %s</p>
-               <p>Their types: %s</p>
-               <div><label>Name: <input type="text" name="name"></label></div>
-               <div><label>Start Time: <input type="text" name="start_time"></label></div>
-               <div><label>End Time: <input type="text" name="end_time"></label></div>
-               <div><label>Type: <input type="text" name="type"></label></div>
-               <input type="submit" value="Remove Event">
-               <button> <a href="/">Go Back</a></button>
+               <h2>Current events: %s -
+               Start times: %s -
+               End times: %s -
+               Types: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Name: <input type="text" name="name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;" ><label>Start Time: <input type="text" name="start_time" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>End Time: <input type="text" name="end_time" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Type: <input type="text" name="type" style = "height: 38;"></label></div>
+                <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Remove Event">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
                <p>%s</p>
-           </form>'''
+           </form>
+           </body>'''
     # handle the POST request
     if request.method == 'POST':
         str = "Event successfully deleted!"
@@ -210,6 +357,83 @@ def delete_event():
     types = ', '.join(types)
     database.close()
     return output % (names, start_times, end_times, types, str)
+
+
+@app.route('/create-relationship/', methods=['GET', 'POST'])
+def create_student_event_relationship():
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    # names_students, interests = database.fetch_students()
+    # names_students = ', '.join(names_students)
+    # interests = ', '.join(interests)
+    database.close()
+    str = ""
+    output = ''' 
+              <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
+               <form method="POST" align = "center">
+               <h2>Current events: %s -
+               Start times: %s -
+               End times: %s</h2>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Event Name: <input type="text" name="event_name" style = "height: 38;"></label></div>
+               <div style="border: none;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;"><label>Student Name: <input type="text" name="student_name" style = "height: 38;"></label></div>
+               <br>
+               <input style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;" type="submit" value="Add Student to an event">
+               <button style="background-color: orange;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;"> <a href="/">Go Back</a></button>
+               <p>%s</p>
+           </form>
+           </body>'''
+
+    if request.method == 'POST':
+        str = "Student Registered successfully to the Event!"
+        event_name = request.form.get('event_name')
+        student_name = request.form.get('student_name')
+        if not event_name:
+            str = "You didn't enter a name!"
+            return output % (names, start_times, end_times, str)
+        if not student_name:
+            str = "You didn't enter a name!"
+            return output % (names, start_times, end_times, str)
+
+        database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+        database.create_relationship(student_name, event_name)
+        database.close()
+
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    # names_students, interests = database.fetch_students()
+    # names_students = ', '.join(names_students)
+    # interests = ', '.join(interests)
+    database.close()
+    return output % (names, start_times, end_times, str)
+
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
