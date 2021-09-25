@@ -26,6 +26,10 @@ class pyghack:
         with self.driver.session() as session:
             session.run("CREATE (a:Event {user: $user, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", user=user, name=name, start_time=start_time, end_time=end_time, type=type)
     
+    def add_student(self, name, interest):
+        with self.driver.session() as session:
+            session.run("CREATE (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
+    
     # def _create_and_return_user(tx, name, )
 
 
