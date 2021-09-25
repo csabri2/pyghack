@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    name = "TimeStamp"
+    name = "PlanIt"
     return '''
             <body style="text-align: center;background-color:powderblue;margin-top: 120px;">
-            <header><h1>Welcome to %s</h1></header>
+            <header><h1>Welcome to %s!</h1></header>
             <button style="background-color: orange; /* Green */
             border: none;
             color: white;
