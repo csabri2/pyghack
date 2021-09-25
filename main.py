@@ -78,6 +78,24 @@ class pyghack:
             interests = [record["interest"] for record in result]
             return (names, interests)
 
+    def list_friends(self, student):
+        with self.driver.session() as session:
+            result = session.run("MATCH (a:Student)-[:Friend]-(b:Student) WHERE a.name = $student RETURN b", student = student)
+            names = [record["name"] for record in result]
+            return names
+    
+    def list_attending(self, student):
+        with self.driver.session() as session:
+            result = session.run("MATCH (a:Student)-[:Attending]-(b:Event) WHERE a.name = $student RETURN b", student = student)
+            names = [record["name"] for record in result]
+            return names
+    
+    def list_attendees(self, event):
+        with self.driver.session() as session:
+            result = session.run("MATCH (a:Event)-[:Attendee]-(b:Student) WHERE a.name = $event RETURN b", event = event)
+            names = [record["name"] for record in result]
+            return names
+
 
 if __name__ == "__main__":
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
