@@ -15,21 +15,31 @@ def index():
 @app.route('/add-student/', methods=['GET', 'POST'])
 def add_student():
     # handle the POST request
-    if request.method == 'POST':
-        name = request.form.get('name')
-        interest = request.form.get('interest')
-        database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
-        database.add_student(name, interest)
-        database.close()
-
-    # otherwise handle the GET request
-    return '''
+    str = ""
+    output = '''
            <form method="POST">
                <div><label>Name: <input type="text" name="name"></label></div>
                <div><label>Interest: <input type="text" name="interest"></label></div>
                <input type="submit" value="Add Student">
                <button> <a href="/">Go back</a></button>
+               <p>%s</p>
            </form>'''
+    if request.method == 'POST':
+        str = "Student successfully added!"
+        name = request.form.get('name')
+        if not name:
+            str = "You didn't enter a name!"
+            return output % str
+        interest = request.form.get('interest')
+        if not interest:
+            str = "You didn't enter an interest!"
+            return output % str
+        database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+        database.add_student(name, interest)
+        database.close()
+
+    # otherwise handle the GET request
+    return output % str
 
 @app.route('/add-event/', methods=['GET', 'POST'])
 def add_event():
