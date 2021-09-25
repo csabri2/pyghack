@@ -22,23 +22,21 @@ class pyghack:
     #                     "a.type = $type", user = user, name = name, start_time = start_time, end_time = end_time, type = type)
     #     return result.single()[0]
 
-    def add_event(self, user, name, start_time, end_time, type):
+    def add_event(self, event_id, name, start_time, end_time, type):
         with self.driver.session() as session:
-            session.run("CREATE (a:Event {user: $user, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", user=user, name=name, start_time=start_time, end_time=end_time, type=type)
+            session.run("CREATE (a:Event {event_id: $event_id, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", event_id=event_id, name=name, start_time=start_time, end_time=end_time, type=type)
     
     def add_student(self, name, interest):
         with self.driver.session() as session:
             session.run("CREATE (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
     
-    def delete_event(self, user, name, start_time, end_time, type):
+    def delete_event(self, event_id, name, start_time, end_time, type):
         with self.driver.session() as session:
-            session.run("MATCH (a:Event {user: $user, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", user=user, name=name, start_time=start_time, end_time=end_time, type=type)
-            session.run("DELETE a")
+            session.run("MATCH (a:Event {event_id: $event_id, name: $name, start_time: $start_time, end_time: $end_time, type: $type}) DELETE a", event_id=event_id, name=name, start_time=start_time, end_time=end_time, type=type)
 
     def delete_student(self, name, interest):
         with self.driver.session() as session:
-            session.run("MATCH (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
-            session.run("DELETE a")
+            session.run("MATCH (a:Student {name: $name, interest: $interst}) DELETE a", name=name, interest=interest)
 
     # def _create_and_return_user(tx, name, )
 
