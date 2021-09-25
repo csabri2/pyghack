@@ -34,7 +34,7 @@ class pyghack:
 
 if __name__ == "__main__":
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
-    database.delete_event("Study group", "1700", "1900", "study")
+    database.delete_event("", "", "", "")
     # database.delete_student("Chris", "sports")
     # database.create_relationship("Chris", "1", "Study group")
     database.close()
