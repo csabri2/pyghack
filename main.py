@@ -30,6 +30,16 @@ class pyghack:
         with self.driver.session() as session:
             session.run("CREATE (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
     
+    def delete_event(self, user, name, start_time, end_time, type):
+        with self.driver.session() as session:
+            session.run("MATCH (a:Event {user: $user, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", user=user, name=name, start_time=start_time, end_time=end_time, type=type)
+            session.run("DELETE a")
+
+    def delete_student(self, name, interest):
+        with self.driver.session() as session:
+            session.run("MATCH (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
+            session.run("DELETE a")
+
     # def _create_and_return_user(tx, name, )
 
 
