@@ -56,9 +56,20 @@ def add_student():
 @app.route('/add-event/', methods=['GET', 'POST'])
 def add_event():
     # handle the POST request
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    database.close()
     str = ""
     output = '''
            <form method="POST">
+               <p>Current events: %s</p>
+               <p>Their start times: %s</p>
+               <p>Current end times: %s</p>
+               <p>Their types: %s</p>
                <div><label>Name: <input type="text" name="name"></label></div>
                <div><label>Start Time: <input type="text" name="start_time"></label></div>
                <div><label>End Time: <input type="text" name="end_time"></label></div>
@@ -72,24 +83,31 @@ def add_event():
         name = request.form.get('name')
         if not name:
             str = "You didn't enter a name!"
-            return output % str
+            return output % (names, start_times, end_times, types, str)
         start_time = request.form.get('start_time')
         if not start_time:
             str = "You didn't enter a start time!"
-            return output % str
+            return output % (names, start_times, end_times, types, str)
         end_time = request.form.get('end_time')
         if not end_time:
             str = "You didn't enter an end time!"
-            return output % str
+            return output % (names, start_times, end_times, types, str)
         type = request.form.get('type')
         if not type:
             str = "You didn't enter a type!"
-            return output % str
+            return output % (names, start_times, end_times, types, str)
         database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
         database.add_event(name, start_time, end_time, type)
         database.close()
     # otherwise handle the GET request
-    return output % str
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    names, start_times, end_times, types = database.fetch_events()
+    names = ', '.join(names)
+    start_times = ', '.join(start_times)
+    end_times = ', '.join(end_times)
+    types = ', '.join(types)
+    database.close()
+    return output % (names, start_times, end_times, types, str)
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000

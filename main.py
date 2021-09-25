@@ -31,6 +31,18 @@ class pyghack:
                         " CREATE (b)-[s:Attendee]->(a) RETURN *"
                         , student_name=student_name, event_name=event_name)
     
+    def fetch_events(self):
+        with self.driver.session() as session:
+            result = session.run("MATCH (a:Event) RETURN a.name AS name")
+            names = [record["name"] for record in result]
+            result = session.run("MATCH (a:Event) RETURN a.start_time AS start_time")
+            start_times = [record["start_time"] for record in result]
+            result = session.run("MATCH (a:Event) RETURN a.end_time AS end_time")
+            end_times = [record["end_time"] for record in result]
+            result = session.run("MATCH (a:Event) RETURN a.type AS type")
+            types = [record["type"] for record in result]
+            return (names, start_times, end_times, types)
+    
     def fetch_students(self):
         with self.driver.session() as session:
             result = session.run("MATCH (a:Student) RETURN a.name AS name")
