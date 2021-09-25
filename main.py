@@ -24,12 +24,21 @@ class pyghack:
         with self.driver.session() as session:
             session.run("MATCH (a:Student {name: $name, interest: $interest}) DETACH DELETE a", name=name, interest=interest)
     
-    def create_relationship(self, student_name, event_name):
+    def connect_student_event(self, student_name, event_name):
         with self.driver.session() as session:
             session.run("MATCH (a:Student), (b:Event) WHERE a.name = $student_name AND b.name = $event_name"
                         " CREATE (a)-[r:Attending]->(b)"
                         " CREATE (b)-[s:Attendee]->(a) RETURN *"
                         , student_name=student_name, event_name=event_name)
+    
+    def connect_student_student(self, student_name_a, student_name_b):
+        if student_name_a == student_name_b:
+            return
+        with self.driver.session() as session:
+            session.run("MATCH (a:Student), (b:Student) WHERE a.name = $student_name_a AND b.name = $student_name_b"
+                        " CREATE (a)-[r:Friend]->(b)"
+                        " CREATE (b)-[s:Friend]->(a) RETURN *"
+                        , student_name_a=student_name_a, student_name_b=student_name_b)
     
     def fetch_events(self):
         with self.driver.session() as session:
