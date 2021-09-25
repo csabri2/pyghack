@@ -8,27 +8,13 @@ class pyghack:
     def close(self):
         self.driver.close()
 
-    # def add_event(self, user, name, start_time, end_time, type):
-    #     with self.driver.session() as session:
-    #         session.write_transaction(self._create_and_return_event, user, name, start_time, end_time, type)
-
-    # @staticmethod
-    # def _create_and_return_event(tx, user, name, start_time, end_time, type):
-    #     result = tx.run("CREATE (a:Event) "
-    #                     "SET a.user = $user, "
-    #                     "a.name = $name, "
-    #                     "a.start_time = $start_time, "
-    #                     "a.end_time = $end_time, "
-    #                     "a.type = $type", user = user, name = name, start_time = start_time, end_time = end_time, type = type)
-    #     return result.single()[0]
-
     def add_event(self, event_id, name, start_time, end_time, type):
         with self.driver.session() as session:
             session.run("CREATE (a:Event {event_id: $event_id, name: $name, start_time: $start_time, end_time: $end_time, type: $type})", event_id=event_id, name=name, start_time=start_time, end_time=end_time, type=type)
     
     def add_student(self, name, interest):
         with self.driver.session() as session:
-            session.run("CREATE (a:Student {name: $name, interest: $interst})", name=name, interest=interest)
+            session.run("CREATE (a:Student {name: $name, interest: $interest})", name=name, interest=interest)
     
     def delete_event(self, event_id, name, start_time, end_time, type):
         with self.driver.session() as session:
@@ -36,12 +22,11 @@ class pyghack:
 
     def delete_student(self, name, interest):
         with self.driver.session() as session:
-            session.run("MATCH (a:Student {name: $name, interest: $interst}) DELETE a", name=name, interest=interest)
-
-    # def _create_and_return_user(tx, name, )
+            session.run("MATCH (a:Student {name: $name, interest: $interest}) DELETE a", name=name, interest=interest)
 
 
 if __name__ == "__main__":
-    database = pyghack("bolt://192.168.137.2:7687/", "neo4j", "1234")
-    database.add_event("Study group", "1700", "1900", "study")
+    database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
+    # database.delete_event("1", "Study group", "1700", "1900", "study")
+    database.delete_student("Chris", "sports")
     database.close()
