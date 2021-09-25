@@ -35,7 +35,9 @@ class pyghack:
         with self.driver.session() as session:
             result = session.run("MATCH (a:Student) RETURN a.name AS name")
             names = [record["name"] for record in result]
-            return names
+            result = session.run("MATCH (a:Student) RETURN a.interest AS interest")
+            interests = [record["interest"] for record in result]
+            return (names, interests)
 
 
 if __name__ == "__main__":

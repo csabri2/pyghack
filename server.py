@@ -16,12 +16,15 @@ def index():
 def add_student():
     # handle the POST request
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
-    names = ', '.join(database.fetch_students())
+    names, interests = database.fetch_students()
+    names = ', '.join(names)
+    interests = ', '.join(interests)
     database.close()
     str = ""
     output = '''
            <form method="POST">
                <p>Current students: %s</p>
+               <p>Their interests: %s</p>
                <div><label>Name: <input type="text" name="name"></label></div>
                <div><label>Interest: <input type="text" name="interest"></label></div>
                <input type="submit" value="Add Student">
@@ -33,20 +36,22 @@ def add_student():
         name = request.form.get('name')
         if not name:
             str = "You didn't enter a name!"
-            return output % (names, str)
+            return output % (names, interests, str)
         interest = request.form.get('interest')
         if not interest:
             str = "You didn't enter an interest!"
-            return output % (names, str)
+            return output % (names, interests, str)
         database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
         database.add_student(name, interest)
         database.close()
 
     # otherwise handle the GET request
     database = pyghack("bolt://localhost:7687/", "neo4j", "1234")
-    names = ', '.join(database.fetch_students())
+    names, interests = database.fetch_students()
+    names = ', '.join(names)
+    interests = ', '.join(interests)
     database.close()
-    return output % (names, str)
+    return output % (names, interests, str)
 
 @app.route('/add-event/', methods=['GET', 'POST'])
 def add_event():
